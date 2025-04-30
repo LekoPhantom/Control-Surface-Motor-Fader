@@ -3,3 +3,13 @@ __pycache__
 Python/data
 Python/*.svg
 build
+cache/
+*.config
+.DS_Store
+*.bin
+*.hex
+*.elf
+/build/
+*.o
+*.log
+

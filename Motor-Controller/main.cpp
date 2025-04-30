@@ -114,12 +114,12 @@ struct Config {
     static constexpr uint8_t i2c_address = 8;
     // The baud rate to use for the Serial interface (e.g. for MIDI_DEBUG,
     // print_controller_signals, serial_control, etc.)
-    static constexpr uint32_t serial_baud_rate = 1000000;
+    static constexpr uint32_t serial_baud_rate = 115200;
     // The baud rate to use for MIDI over Serial.
     // Use 31'250 for MIDI over 5-pin DIN, HIDUINO/USBMidiKliK.
     // Hairless MIDI uses 115'200 by default.
     // The included python/SerialMIDI.py script uses 1'000'000.
-    static constexpr uint32_t midi_baud_rate = serial_baud_rate;
+    static constexpr uint32_t midi_baud_rate = 1000000;
 
     // Number of faders, must be between 1 and 4:
     static constexpr size_t num_faders = 1;
@@ -144,7 +144,8 @@ struct Config {
     // sensitive or decrease it if it's not sensitive enough:
     static constexpr float touch_rc_time_threshold = 150e-6; // seconds
     // Bit masks of the touch pins (must be on port B):
-    static constexpr uint8_t touch_masks[] = {1 << PB0, 1 << PB1, 1 << PB2,
+    //static constexpr uint8_t touch_masks[] = {1 << PB0, 1 << PB1, 1 << PB2,
+    static constexpr uint8_t touch_masks[] = {1 << PD4, 1 << PB1, 1 << PB2,
                                               1 << PB4};
 
     // Use phase-correct PWM (true) or fast PWM (false), this determines the
