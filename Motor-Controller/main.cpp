@@ -92,7 +92,7 @@
 // Enable MIDI input/output.
 #define WITH_MIDI 0
 // Print to the Serial monitor instead of sending actual MIDI messages.
-#define MIDI_DEBUG 0
+#define MIDI_DEBUG 1
 
 struct Config {
     // Print the control loop and interrupt frequencies to Serial at startup:
@@ -142,7 +142,7 @@ struct Config {
     // Capacitive touch sensing RC time threshold.
     // Increase this time constant if the capacitive touch sense is too
     // sensitive or decrease it if it's not sensitive enough:
-    static constexpr float touch_rc_time_threshold = 150e-6; // seconds
+    static constexpr float touch_rc_time_threshold = 12e-6; // seconds
     // Bit masks of the touch pins (must be on port B):
     //static constexpr uint8_t touch_masks[] = {1 << PB0, 1 << PB1, 1 << PB2,
     static constexpr uint8_t touch_masks[] = {1 << PD4, 1 << PB1, 1 << PB2,
@@ -272,6 +272,7 @@ void sendMIDIMessages(bool touched) {
     // Touch
     static bool prevTouched = false; // Whether the knob is being touched
     if (touched != prevTouched) {
+        Serial.println(touched ? "Fader touched!" : "Fader released!");
         const MIDIAddress addr = MCU::FADER_TOUCH_1 + Idx;
         touched ? midi.sendNoteOn(addr, 127) : midi.sendNoteOff(addr, 127);
         prevTouched = touched;
