@@ -79,21 +79,32 @@ void TouchSense<Config>::update(uint8_t counter) {
         DDRB &= ~gpio_mask; // input mode, start charging
     } else if (counter == touch_sense_thres) {
         uint8_t touched_bits = PINB;
+        Serial.print("Raw touch bits: ");
+        Serial.println(PINB, BIN);  // Debug touch readings
         DDRB |= gpio_mask; // output mode, start discharging
         for (uint8_t i = 0; i < Config::num_faders; ++i) {
             if (Config::touch_masks[i] == 0)
                 continue;
             bool touch_i = (touched_bits & Config::touch_masks[i]) == 0;
+            Serial.print("Fader ");
+            Serial.print(i);
+            Serial.print(" touched: ");
+            Serial.println(touch_i);
             if (touch_i) {
                 touch_timers[i] = touch_sense_stickiness;
                 touched[i] = true;
             } else if (touch_timers[i] > 0) {
                 --touch_timers[i];
+                Serial.print("Stickiness timer for Fader ");
+                Serial.print(i);
+                Serial.print(": ");
+                Serial.println(touch_timers[i]);
                 if (touch_timers[i] == 0) touched[i] = false;
             }
         }
     }
 }
+
 
 template <class Config>
 bool TouchSense<Config>::read(uint8_t idx) {
